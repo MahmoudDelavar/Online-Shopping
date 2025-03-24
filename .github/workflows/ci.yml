@@ -44,13 +44,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: List installed packages
+        run: ls -l node_modules/
+
       - name: Run cspell
-        run: pnpm spell-check
+        run: pnpm run spell-check
 
       - name: Type-check
         run: |
           echo -e "/// <reference types=\"next\" />\n/// <reference types=\"next/image-types/global\" />" > ./next-env.d.ts
-          pnpm type-check
+          pnpm run  type-check
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm run lint
