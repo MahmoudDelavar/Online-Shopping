@@ -1,16 +1,21 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
+import { initializeConfig } from 'mdp-eslint-config';
+const baseConfig = initializeConfig({
+  disableHeavyRules: false,
+  enableNextJs: true,
+  enablePrettier: false,
+  enableReact: true,
+  enableTypescript: true,
+  projectPathAliasRegex: '^@.*(?:/.*)?$',
+  typescriptOptions: {
+    tsconfigRootDir: import.meta.dirname,
+  },
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    files: ['src/**/*.{ts,tsx}'],
+  },
+  ...baseConfig,
 ];
 
 export default eslintConfig;
