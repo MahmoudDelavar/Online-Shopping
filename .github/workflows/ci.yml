@@ -57,18 +57,21 @@ jobs:
       - name: Lint
         run: pnpm run lint
 
-  create-pr:
+  create-pull-request:
     runs-on: ubuntu-latest
     needs: build
+    if: github.ref != 'refs/heads/main'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Create pull request
-        uses: peter-evans/create-pull-request@v4
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref || github.ref_name }}
+          title: '🔀 Merge `${{ github.ref_name }}` into main'
+          body: 'This PR was automatically created by GitHub Actions.'
           base: main
-          branch: ${{ github.ref_name }}
-          title: 'Auto PR for branch ${{ github.ref_name }}'
-          body: 'Automated pull request for the branch ${{ github.ref_name }}.'
